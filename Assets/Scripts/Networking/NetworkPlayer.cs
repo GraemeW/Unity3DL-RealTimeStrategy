@@ -5,5 +5,11 @@ using Mirror;
 
 public class NetworkPlayer : NetworkBehaviour
 {
-    
+    #region Server
+
+    #endregion
+
+    #region Client
+
+    #endregion
 }
