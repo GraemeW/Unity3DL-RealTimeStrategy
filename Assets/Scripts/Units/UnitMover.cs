@@ -5,7 +5,7 @@ using Mirror;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
 
-public class PlayerMover : NetworkBehaviour
+public class UnitMover : NetworkBehaviour
 {
     // Tunables
     [SerializeField] NavMeshAgent navMeshAgent = null;
