@@ -37,6 +37,11 @@ public class NetworkPlayer : NetworkBehaviour
     #endregion
 
     #region Client
+    public List<Unit> GetUnits()
+    {
+        return units;
+    }
+    
     public override void OnStartClient()
     {
         if (!isClientOnly) { return; }
