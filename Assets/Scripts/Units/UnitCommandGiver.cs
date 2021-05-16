@@ -23,9 +23,33 @@ public class UnitCommandGiver : MonoBehaviour
         if (!Mouse.current.rightButton.wasPressedThisFrame) { return; }
 
         Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
-        if (!Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, layerMask)) { return; }
+        if (CastAndTarget(ray)) { return; }
+        if (CastAndMove(ray)) { return; }
 
+    }
+
+    private bool CastAndTarget(Ray ray)
+    {
+        RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity, layerMask);
+        foreach (RaycastHit currentHit in hits)
+        {
+            // No treatment on top-most, just grab whatever one satisifies first
+            if (currentHit.collider.TryGetComponent(out Targetable targetable))
+            {
+                if (targetable.hasAuthority) { TryMove(currentHit.point); return true; }
+                TryTarget(targetable);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private bool CastAndMove(Ray ray)
+    {
+        // Default behavior:  Just Move
+        if (!Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, layerMask)) { return false; }
         TryMove(hit.point);
+        return true;
     }
 
     private void TryMove(Vector3 point)
@@ -33,6 +57,14 @@ public class UnitCommandGiver : MonoBehaviour
         foreach (Unit unit in unitSelectionHandler.SelectedUnits)
         {
             unit.GetUnitMover().CmdMove(point);
+        }
+    }
+
+    private void TryTarget(Targetable targetable)
+    {
+        foreach (Unit unit in unitSelectionHandler.SelectedUnits)
+        {
+            unit.GetTargeter().CmdSetTarget(targetable.gameObject);
         }
     }
 }
