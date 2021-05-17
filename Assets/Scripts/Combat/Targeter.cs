@@ -7,7 +7,7 @@ public class Targeter : NetworkBehaviour
 {
 
     // State
-    Targetable target = null;
+    [SerializeField] Targetable target = null;
 
     public Targetable GetTarget()
     {
