@@ -49,6 +49,7 @@ GameObject:
   - component: {fileID: 7776732622096308669}
   - component: {fileID: 1166567206791427968}
   - component: {fileID: 990144432979773289}
+  - component: {fileID: 4381484649684183586}
   - component: {fileID: 2869803525398813413}
   m_Layer: 0
   m_Name: Unit
@@ -72,6 +73,7 @@ RectTransform:
   - {fileID: 7979542711588705672}
   - {fileID: 1873316788581330032}
   - {fileID: 5458158594949046769}
+  - {fileID: 4497397793053967718}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -219,6 +221,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  health: {fileID: 2869803525398813413}
 --- !u!65 &1816076586967768418
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -282,6 +285,21 @@ MonoBehaviour:
   fireRange: 11
   fireRate: 1
   rotationSpeed: 180
+--- !u!114 &4381484649684183586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7696266411820894528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab1b4ed9d76f99f43857b3331c4c2267, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: {fileID: 2869803525398813413}
+  healthBarParent: {fileID: 4497397793053967736}
+  healthBarImage: {fileID: 4497397793296798620}
 --- !u!114 &2869803525398813413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -427,6 +445,68 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5085198222116132156, guid: a0adf887f2363c54988001d1de4090f1, type: 3}
   m_PrefabInstance: {fileID: 2895611179535909044}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &3733425266341439439
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 6736778021303854969}
+    m_Modifications:
+    - target: {fileID: 983540678147728041, guid: b2929853b4301b74ea03362537fa5cbb, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 983540678147728041, guid: b2929853b4301b74ea03362537fa5cbb, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 983540678147728041, guid: b2929853b4301b74ea03362537fa5cbb, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 983540678147728041, guid: b2929853b4301b74ea03362537fa5cbb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 983540678147728041, guid: b2929853b4301b74ea03362537fa5cbb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 983540678147728041, guid: b2929853b4301b74ea03362537fa5cbb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 983540678147728055, guid: b2929853b4301b74ea03362537fa5cbb, type: 3}
+      propertyPath: m_Name
+      value: HealthBarCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 983540678147728055, guid: b2929853b4301b74ea03362537fa5cbb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b2929853b4301b74ea03362537fa5cbb, type: 3}
+--- !u!1 &4497397793053967736 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 983540678147728055, guid: b2929853b4301b74ea03362537fa5cbb, type: 3}
+  m_PrefabInstance: {fileID: 3733425266341439439}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &4497397793053967718 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 983540678147728041, guid: b2929853b4301b74ea03362537fa5cbb, type: 3}
+  m_PrefabInstance: {fileID: 3733425266341439439}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4497397793296798620 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 983540678307558483, guid: b2929853b4301b74ea03362537fa5cbb, type: 3}
+  m_PrefabInstance: {fileID: 3733425266341439439}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7696266410509003218
 PrefabInstance:
   m_ObjectHideFlags: 0

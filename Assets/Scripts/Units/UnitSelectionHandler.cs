@@ -31,11 +31,13 @@ public class UnitSelectionHandler : MonoBehaviour
     private void OnEnable()
     {
         standardInput.Player.Enable();
+        Unit.AuthorityOnUnitDespawned += AuthorityHandleUnitDespawned;
     }
 
     private void OnDisable()
     {
         standardInput.Player.Disable();
+        Unit.AuthorityOnUnitDespawned -= AuthorityHandleUnitDespawned;
     }
 
     private void SelectSticky(bool enable)
@@ -154,5 +156,10 @@ public class UnitSelectionHandler : MonoBehaviour
             selectedUnit.Deselect();
         }
         SelectedUnits.Clear();
+    }
+
+    private void AuthorityHandleUnitDespawned(Unit unit)
+    {
+        SelectedUnits.Remove(unit);
     }
 }

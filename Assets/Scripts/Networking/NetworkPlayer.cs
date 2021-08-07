@@ -42,9 +42,9 @@ public class NetworkPlayer : NetworkBehaviour
         return units;
     }
     
-    public override void OnStartClient()
+    public override void OnStartAuthority()
     {
-        if (!isClientOnly) { return; }
+        if (NetworkServer.active) { return; }
 
         Unit.AuthorityOnUnitSpawned += ClientHandleUnitSpawned;
         Unit.AuthorityOnUnitDespawned += ClientHandleUnitDespawned;
@@ -52,7 +52,7 @@ public class NetworkPlayer : NetworkBehaviour
 
     public override void OnStopClient()
     {
-        if (!isClientOnly) { return; }
+        if (!isClientOnly || !hasAuthority) { return; }
 
         Unit.AuthorityOnUnitSpawned -= ClientHandleUnitSpawned;
         Unit.AuthorityOnUnitDespawned -= ClientHandleUnitDespawned;
@@ -60,15 +60,11 @@ public class NetworkPlayer : NetworkBehaviour
 
     private void ClientHandleUnitSpawned(Unit unit)
     {
-        if (!hasAuthority) { return; }
-
         units.Add(unit);
     }
 
     private void ClientHandleUnitDespawned(Unit unit)
     {
-        if (!hasAuthority) { return; }
-
         units.Remove(unit);
     }
 
