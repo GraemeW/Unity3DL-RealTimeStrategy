@@ -11,6 +11,7 @@ public class GameOverHandler : NetworkBehaviour
 
     // Events
     public static event Action<string> clientOnGameOver;
+    public static event Action serverOnGameOver;
 
     #region Server
     public override void OnStartServer()
@@ -36,10 +37,13 @@ public class GameOverHandler : NetworkBehaviour
         unitBases.Remove(unitBase);
 
         if (unitBases.Count != 1) { return; }
-
         int playerID = unitBases[0].connectionToClient.connectionId;
 
         RpcGameOver($"Player {playerID}");
+        if (serverOnGameOver != null)
+        {
+            serverOnGameOver.Invoke();
+        }
     }
     #endregion
 

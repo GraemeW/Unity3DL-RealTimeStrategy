@@ -32,12 +32,14 @@ public class UnitSelectionHandler : MonoBehaviour
     {
         standardInput.Player.Enable();
         Unit.AuthorityOnUnitDespawned += AuthorityHandleUnitDespawned;
+        GameOverHandler.clientOnGameOver += ClientHandleGameOver;
     }
 
     private void OnDisable()
     {
         standardInput.Player.Disable();
         Unit.AuthorityOnUnitDespawned -= AuthorityHandleUnitDespawned;
+        GameOverHandler.clientOnGameOver -= ClientHandleGameOver;
     }
 
     private void SelectSticky(bool enable)
@@ -161,5 +163,10 @@ public class UnitSelectionHandler : MonoBehaviour
     private void AuthorityHandleUnitDespawned(Unit unit)
     {
         SelectedUnits.Remove(unit);
+    }
+
+    private void ClientHandleGameOver(string winnerName)
+    {
+        enabled = false;
     }
 }

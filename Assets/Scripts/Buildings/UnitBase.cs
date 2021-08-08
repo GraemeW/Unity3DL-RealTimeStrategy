@@ -12,6 +12,7 @@ public class UnitBase : NetworkBehaviour
     // Events
     public static event Action<UnitBase> serverOnBaseSpawned;
     public static event Action<UnitBase> serverOnBaseDespawned;
+    public static event Action<int> serverOnPlayerDie;
 
     #region Server
     public override void OnStartServer()
@@ -35,6 +36,11 @@ public class UnitBase : NetworkBehaviour
     [Server]
     private void ServerHandleDie()
     {
+        if (serverOnPlayerDie != null)
+        {
+            serverOnPlayerDie.Invoke(connectionToClient.connectionId);
+        }
+
         NetworkServer.Destroy(gameObject);
     }
     #endregion

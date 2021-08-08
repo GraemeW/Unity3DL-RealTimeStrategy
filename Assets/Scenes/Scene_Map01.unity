@@ -611,7 +611,7 @@ GameObject:
   - component: {fileID: 2095954638}
   - component: {fileID: 2095954641}
   - component: {fileID: 2095954643}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -941,6 +941,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7340538544948161652, guid: 3169381775594724c9278515964722e6, type: 3}
+      propertyPath: layerMask.m_Bits
+      value: 1281
+      objectReference: {fileID: 0}
     - target: {fileID: 8038196989998746438, guid: 3169381775594724c9278515964722e6, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -984,6 +988,10 @@ PrefabInstance:
     - target: {fileID: 8038196989998746438, guid: 3169381775594724c9278515964722e6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8038196989998746439, guid: 3169381775594724c9278515964722e6, type: 3}
+      propertyPath: layerMask.m_Bits
+      value: 256
       objectReference: {fileID: 0}
     - target: {fileID: 8038196989998746457, guid: 3169381775594724c9278515964722e6, type: 3}
       propertyPath: m_Name
