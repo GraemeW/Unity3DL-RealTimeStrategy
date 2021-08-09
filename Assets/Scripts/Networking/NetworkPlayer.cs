@@ -6,19 +6,28 @@ using Mirror;
 public class NetworkPlayer : NetworkBehaviour
 {
     // State
-    [SerializeField] List<Unit> units = new List<Unit>();
+    List<Unit> units = new List<Unit>();
+    List<Building> buildings = new List<Building>();
 
     #region Server
     public override void OnStartServer()
     {
         Unit.ServerOnUnitSpawned += ServerHandleUnitSpawned;
         Unit.ServerOnUnitDespawned += ServerHandleUnitDespawned;
+        Building.ServerOnBuildingSpawned += ServerHandleBuildingSpawned;
+        Building.ServerOnBuildingDespawned += ServerHandleBuildingDespawned;
+        Building.AuthorityOnBuildingSpawned += AuthorityHandleBuildingSpawned;
+        Building.AuthorityOnBuildingDespawned += AuthorityHandleBuildingDespawned;
     }
 
     public override void OnStopServer()
     {
         Unit.ServerOnUnitSpawned -= ServerHandleUnitSpawned;
         Unit.ServerOnUnitDespawned -= ServerHandleUnitDespawned;
+        Building.ServerOnBuildingSpawned -= ServerHandleBuildingSpawned;
+        Building.ServerOnBuildingDespawned -= ServerHandleBuildingDespawned;
+        Building.AuthorityOnBuildingSpawned -= AuthorityHandleBuildingSpawned;
+        Building.AuthorityOnBuildingDespawned -= AuthorityHandleBuildingDespawned;
     }
 
     private void ServerHandleUnitSpawned(Unit unit)
@@ -34,6 +43,20 @@ public class NetworkPlayer : NetworkBehaviour
 
         units.Remove(unit);
     }
+
+    private void ServerHandleBuildingSpawned(Building building)
+    {
+        if (building.connectionToClient.connectionId != connectionToClient.connectionId) { return; }
+
+        buildings.Add(building);
+    }
+
+    private void ServerHandleBuildingDespawned(Building building)
+    {
+        if (building.connectionToClient.connectionId != connectionToClient.connectionId) { return; }
+
+        buildings.Remove(building);
+    }
     #endregion
 
     #region Client
@@ -41,7 +64,12 @@ public class NetworkPlayer : NetworkBehaviour
     {
         return units;
     }
-    
+
+    public List<Building> GetBuildings()
+    {
+        return buildings;
+    }
+
     public override void OnStartAuthority()
     {
         if (NetworkServer.active) { return; }
@@ -68,6 +96,15 @@ public class NetworkPlayer : NetworkBehaviour
         units.Remove(unit);
     }
 
+    private void AuthorityHandleBuildingSpawned(Building building)
+    {
+        buildings.Add(building);
+    }
+
+    private void AuthorityHandleBuildingDespawned(Building building)
+    {
+        buildings.Remove(building);
+    }
 
     #endregion
 }
