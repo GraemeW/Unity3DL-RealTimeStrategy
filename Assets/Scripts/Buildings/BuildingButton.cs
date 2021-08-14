@@ -14,18 +14,22 @@ public class BuildingButton : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     [SerializeField] Image iconImage = null;
     [SerializeField] TextMeshProUGUI priceText = null;
     [SerializeField] LayerMask floorMask = new LayerMask();
+    [SerializeField] Color canPlaceColor = Color.green;
+    [SerializeField] Color cannotPlaceColor = Color.red;
 
     // Cached References
     Camera mainCamera = null;
     NetworkPlayer networkPlayer = null;
     GameObject buildingPreviewInstance = null;
     Renderer buildingRendererInstance = null;
+    BoxCollider buildingCollider = null;
 
     private void Start()
     {
         mainCamera = Camera.main;
         iconImage.sprite = building.GetIcon();
         priceText.text = building.GetPrice().ToString();
+        buildingCollider = building.GetComponent<BoxCollider>();
     }
 
     private void Update()
@@ -54,8 +58,8 @@ public class BuildingButton : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        UnityEngine.Debug.Log("Hello?");
         if (eventData.button != PointerEventData.InputButton.Left) { return; }
+        if (networkPlayer.GetResources() < building.GetPrice()) { return; }
 
         buildingPreviewInstance = Instantiate(building.GetBuildingPreview());
         buildingRendererInstance = buildingPreviewInstance.GetComponentInChildren<Renderer>();
@@ -71,7 +75,7 @@ public class BuildingButton : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, floorMask))
         {
-            // place building
+            networkPlayer.CmdTryPlaceBuilding(building.GetID(), hit.point);
         }
 
         Destroy(buildingPreviewInstance);
@@ -88,5 +92,9 @@ public class BuildingButton : MonoBehaviour, IPointerDownHandler, IPointerUpHand
         {
             buildingPreviewInstance.SetActive(true);
         }
+
+        Color previewColor = networkPlayer.CanPlaceBuilding(buildingCollider, hit.point) ? canPlaceColor : cannotPlaceColor;
+
+        buildingRendererInstance.material.SetColor("_BaseColor", previewColor);
     }
 }

@@ -7,6 +7,7 @@ using System;
 
 public class Unit : NetworkBehaviour
 {
+    [SerializeField] int resourceCost = 10;
     [SerializeField] UnitMover unitMover = null;
     [SerializeField] Targeter targeter = null;
     [SerializeField] UnityEvent onSelected = null;
@@ -26,6 +27,11 @@ public class Unit : NetworkBehaviour
     public Targeter GetTargeter()
     {
         return targeter;
+    }
+
+    public int GetResourceCost()
+    {
+        return resourceCost;
     }
 
     #region Server
