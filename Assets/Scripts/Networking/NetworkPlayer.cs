@@ -13,11 +13,17 @@ public class NetworkPlayer : NetworkBehaviour
 
     // State
     [SyncVar (hook = nameof(ClientHandleResourcesUpdated))] int resources = 500;
+    Color teamColor = new Color();
     List<Unit> units = new List<Unit>();
     List<Building> activeBuildings = new List<Building>();
 
     // Events
     public event Action<int> clientOnResourcesUpdated;
+
+    public Color GetTeamColor()
+    {
+        return teamColor;
+    }
 
     public bool CanPlaceBuilding(BoxCollider buildingCollider, Vector3 position)
     {
@@ -43,14 +49,27 @@ public class NetworkPlayer : NetworkBehaviour
         Unit.ServerOnUnitDespawned += ServerHandleUnitDespawned;
         Building.ServerOnBuildingSpawned += ServerHandleBuildingSpawned;
         Building.ServerOnBuildingDespawned += ServerHandleBuildingDespawned;
-        Building.AuthorityOnBuildingSpawned += AuthorityHandleBuildingSpawned;
-        Building.AuthorityOnBuildingDespawned += AuthorityHandleBuildingDespawned;
     }
+
+    public override void OnStopServer()
+    {
+        Unit.ServerOnUnitSpawned -= ServerHandleUnitSpawned;
+        Unit.ServerOnUnitDespawned -= ServerHandleUnitDespawned;
+        Building.ServerOnBuildingSpawned -= ServerHandleBuildingSpawned;
+        Building.ServerOnBuildingDespawned -= ServerHandleBuildingDespawned;
+    }
+
 
     [Server]
     public void SetResources(int newResources)
     {
         resources = newResources;
+    }
+
+    [Server]
+    public void SetTeamColor(Color teamColor)
+    {
+        this.teamColor = teamColor;
     }
 
     [Command]
@@ -78,15 +97,6 @@ public class NetworkPlayer : NetworkBehaviour
         SetResources(GetResources() - buildingToPlace.GetPrice());
     }
 
-    public override void OnStopServer()
-    {
-        Unit.ServerOnUnitSpawned -= ServerHandleUnitSpawned;
-        Unit.ServerOnUnitDespawned -= ServerHandleUnitDespawned;
-        Building.ServerOnBuildingSpawned -= ServerHandleBuildingSpawned;
-        Building.ServerOnBuildingDespawned -= ServerHandleBuildingDespawned;
-        Building.AuthorityOnBuildingSpawned -= AuthorityHandleBuildingSpawned;
-        Building.AuthorityOnBuildingDespawned -= AuthorityHandleBuildingDespawned;
-    }
 
     private void ServerHandleUnitSpawned(Unit unit)
     {
@@ -137,6 +147,8 @@ public class NetworkPlayer : NetworkBehaviour
     {
         if (NetworkServer.active) { return; }
 
+        Building.AuthorityOnBuildingSpawned += AuthorityHandleBuildingSpawned;
+        Building.AuthorityOnBuildingDespawned += AuthorityHandleBuildingDespawned;
         Unit.AuthorityOnUnitSpawned += ClientHandleUnitSpawned;
         Unit.AuthorityOnUnitDespawned += ClientHandleUnitDespawned;
     }
@@ -145,6 +157,8 @@ public class NetworkPlayer : NetworkBehaviour
     {
         if (!isClientOnly || !hasAuthority) { return; }
 
+        Building.AuthorityOnBuildingSpawned -= AuthorityHandleBuildingSpawned;
+        Building.AuthorityOnBuildingDespawned -= AuthorityHandleBuildingDespawned;
         Unit.AuthorityOnUnitSpawned -= ClientHandleUnitSpawned;
         Unit.AuthorityOnUnitDespawned -= ClientHandleUnitDespawned;
     }

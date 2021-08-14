@@ -63,6 +63,14 @@ PrefabInstance:
       propertyPath: aimAtPoint
       value: 
       objectReference: {fileID: 4335367153675990927}
+    - target: {fileID: 2100582062709339910, guid: 8e6193dee63df2e4497654fc768aa99c, type: 3}
+      propertyPath: colorRenderers.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2100582062709339910, guid: 8e6193dee63df2e4497654fc768aa99c, type: 3}
+      propertyPath: colorRenderers.Array.data[0]
+      value: 
+      objectReference: {fileID: 178014284102405187}
     - target: {fileID: 5134721975681905520, guid: 8e6193dee63df2e4497654fc768aa99c, type: 3}
       propertyPath: m_Name
       value: UnitSpawner
@@ -230,6 +238,11 @@ PrefabInstance:
 --- !u!4 &4335367153675990927 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6355912139515340626, guid: d83063cf3abf30346858f273f9bedc78, type: 3}
+  m_PrefabInstance: {fileID: 7214464369129115869}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &178014284102405187 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 7378728057449340062, guid: d83063cf3abf30346858f273f9bedc78, type: 3}
   m_PrefabInstance: {fileID: 7214464369129115869}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7280510199284323682

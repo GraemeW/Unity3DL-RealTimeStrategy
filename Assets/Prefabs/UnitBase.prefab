@@ -107,6 +107,14 @@ PrefabInstance:
       propertyPath: aimAtPoint
       value: 
       objectReference: {fileID: 4335367153675990927}
+    - target: {fileID: 2100582062709339910, guid: 8e6193dee63df2e4497654fc768aa99c, type: 3}
+      propertyPath: colorRenderers.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2100582062709339910, guid: 8e6193dee63df2e4497654fc768aa99c, type: 3}
+      propertyPath: colorRenderers.Array.data[0]
+      value: 
+      objectReference: {fileID: 178014284102405187}
     - target: {fileID: 5134721975681905520, guid: 8e6193dee63df2e4497654fc768aa99c, type: 3}
       propertyPath: m_Name
       value: UnitBase
