@@ -109,12 +109,14 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   buildings:
-  - {fileID: 754591751839367226, guid: 09f10732dc921b344821e2a802f378e7, type: 3}
   - {fileID: 754591751839367226, guid: ab553311d78eb754c8f888e2d5e18ba6, type: 3}
+  - {fileID: 3292565201954925928, guid: 0aa1e85e5d7e66341bd0b700b084d7fe, type: 3}
+  - {fileID: 3292565201954925928, guid: 0d7c36c397ed26a40aac84349c489162, type: 3}
   buildingBlockLayer:
     serializedVersion: 2
     m_Bits: 321
-  buildingRangeLimit: 5
+  buildingRangeLimit: 8
+  cameraTransform: {fileID: 2235451360003810129}
 --- !u!114 &6797567639369505807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -159,7 +161,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7817098911882308116}
   m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 10, z: 0}
+  m_LocalPosition: {x: 0, y: 14, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5907808032742181860}

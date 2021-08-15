@@ -10,9 +10,10 @@ public class NetworkPlayer : NetworkBehaviour
     [SerializeField] Building[] buildings = new Building[0];
     [SerializeField] LayerMask buildingBlockLayer = new LayerMask();
     [SerializeField] float buildingRangeLimit = 5f;
+    [SerializeField] Transform cameraTransform = null;
 
     // State
-    [SyncVar (hook = nameof(ClientHandleResourcesUpdated))] int resources = 500;
+    [SyncVar (hook = nameof(ClientHandleResourcesUpdated))] int resources = 150;
     Color teamColor = new Color();
     List<Unit> units = new List<Unit>();
     List<Building> activeBuildings = new List<Building>();
@@ -23,6 +24,11 @@ public class NetworkPlayer : NetworkBehaviour
     public Color GetTeamColor()
     {
         return teamColor;
+    }
+
+    public Transform GetCameraTransform()
+    {
+        return cameraTransform;
     }
 
     public bool CanPlaceBuilding(BoxCollider buildingCollider, Vector3 position)

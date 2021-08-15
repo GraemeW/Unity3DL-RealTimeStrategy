@@ -43,7 +43,6 @@ public class UnitCommandGiver : MonoBehaviour
         RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity, layerMask);
         foreach (RaycastHit currentHit in hits)
         {
-            UnityEngine.Debug.Log(currentHit.collider.gameObject.name);
             // No treatment on top-most, just grab whatever one satisifies first
             if (currentHit.collider.TryGetComponent(out Targetable targetable))
             {
