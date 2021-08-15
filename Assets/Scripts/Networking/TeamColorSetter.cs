@@ -24,6 +24,11 @@ public class TeamColorSetter : NetworkBehaviour
     #endregion
 
     #region Client
+    public override void OnStartAuthority()
+    {
+        HandleTeamColorUpdated(teamColor, teamColor);
+    }
+
     private void HandleTeamColorUpdated(Color oldColor, Color newColor)
     {
         foreach (Renderer renderer in colorRenderers)
@@ -40,7 +45,7 @@ public class TeamColorSetter : NetworkBehaviour
         // Race Condition:  Cannot guarantee client is available within start since it follows from networkmanager Start() routine
         if (networkPlayer == null)
         {
-            NetworkConnection networkConnection = NetworkClient.connection;
+            NetworkConnection networkConnection = connectionToClient;
             if (networkConnection != null)
             {
                 NetworkIdentity networkIdentity = networkConnection.identity;

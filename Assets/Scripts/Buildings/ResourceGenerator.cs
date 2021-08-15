@@ -50,7 +50,7 @@ public class ResourceGenerator : NetworkBehaviour
         // Race Condition:  Cannot guarantee client is available within start since it follows from networkmanager Start() routine
         if (networkPlayer == null)
         {
-            NetworkConnection networkConnection = NetworkClient.connection;
+            NetworkConnection networkConnection = connectionToClient;
             if (networkConnection != null)
             {
                 NetworkIdentity networkIdentity = networkConnection.identity;

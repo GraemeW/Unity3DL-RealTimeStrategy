@@ -10,14 +10,11 @@ public class NetworkManagerRTS : NetworkManager
     [SerializeField] GameObject unitSpawnerPrefab = null;
     [SerializeField] GameOverHandler gameOverHandlerPrefab = null;
 
-    // State
-    NetworkPlayer networkPlayer = null;
-
     public override void OnServerAddPlayer(NetworkConnection conn)
     {
         base.OnServerAddPlayer(conn);
 
-        SetUpNetworkPlayerReference();
+        NetworkPlayer networkPlayer = conn.identity.GetComponent<NetworkPlayer>();
         Color playerColor = new Color(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f));
         networkPlayer.SetTeamColor(playerColor);
 
@@ -31,21 +28,6 @@ public class NetworkManagerRTS : NetworkManager
         {
             GameOverHandler gameOverHandlerInstance = Instantiate(gameOverHandlerPrefab);
             NetworkServer.Spawn(gameOverHandlerInstance.gameObject);
-        }
-    }
-
-    private void SetUpNetworkPlayerReference()
-    {
-        // Called after Start
-        // Race Condition:  Cannot guarantee client is available within start since it follows from networkmanager Start() routine
-        if (networkPlayer == null)
-        {
-            NetworkConnection networkConnection = NetworkClient.connection;
-            if (networkConnection != null)
-            {
-                NetworkIdentity networkIdentity = networkConnection.identity;
-                if (networkIdentity != null) { networkPlayer = networkIdentity.GetComponent<NetworkPlayer>(); }
-            }
         }
     }
 }
