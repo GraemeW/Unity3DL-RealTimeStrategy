@@ -10,7 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 408848746976001887}
   - component: {fileID: 408848746976001884}
-  - component: {fileID: 408848746976001885}
+  - component: {fileID: 249897237972256544}
+  - component: {fileID: 6648576607166900679}
+  - component: {fileID: 6091940238949212544}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -53,7 +55,7 @@ MonoBehaviour:
   serverBatchInterval: 0
   offlineScene: Assets/Scenes/Scene_Menu.unity
   onlineScene: Assets/Scenes/Scene_Map01.unity
-  transport: {fileID: 408848746976001885}
+  transport: {fileID: 6648576607166900679}
   networkAddress: localhost
   maxConnections: 4
   disconnectInactiveConnections: 0
@@ -75,7 +77,29 @@ MonoBehaviour:
   basePrefab: {fileID: 754591751839367228, guid: 79e1c214ae5072a4eb9f710f4eda3e91, type: 3}
   gameOverHandlerPrefab: {fileID: 5474429558100590128, guid: 558361877f5f49a449df812b2b93faa6, type: 3}
   gameSceneReference: Scene_Map01
---- !u!114 &408848746976001885
+--- !u!114 &249897237972256544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 408848746976001882}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b0fecffa3f624585964b0d0eb21b18e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Port: 7777
+  NoDelay: 1
+  Interval: 10
+  FastResend: 2
+  CongestionWindow: 0
+  SendWindowSize: 4096
+  ReceiveWindowSize: 4096
+  debugLog: 0
+  statisticsGUI: 0
+  statisticsLog: 0
+--- !u!114 &6648576607166900679
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -84,18 +108,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 408848746976001882}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7424c1070fad4ba2a7a96b02fbeb4bb, type: 3}
+  m_Script: {fileID: 11500000, guid: ea368fb6f27ec2f40a40e20977992b9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  port: 7777
-  NoDelay: 1
-  SendTimeout: 5000
-  ReceiveTimeout: 30000
-  serverMaxMessageSize: 16384
-  serverMaxReceivesPerTick: 10000
-  serverSendQueueLimitPerConnection: 10000
-  serverReceiveQueueLimitPerConnection: 10000
-  clientMaxMessageSize: 16384
-  clientMaxReceivesPerTick: 1000
-  clientSendQueueLimit: 10000
-  clientReceiveQueueLimit: 10000
+  Channels: 0200000001000000
+  Timeout: 25
+  SteamAppID: 480
+  AllowSteamRelay: 1
+  UseNextGenSteamNetworking: 1
+  SteamUserID: 0
+--- !u!114 &6091940238949212544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 408848746976001882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef4bffeda13d7a748973ff9204401c07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
