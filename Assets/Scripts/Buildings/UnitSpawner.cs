@@ -26,10 +26,13 @@ public class UnitSpawner : NetworkBehaviour, IPointerClickHandler
     // Cached References
     NetworkPlayer networkPlayer = null;
 
+    private void Start()
+    {
+        networkPlayer = NetworkClient.connection.identity.GetComponent<NetworkPlayer>();
+    }
+
     private void Update()
     {
-        SetUpNetworkPlayerReference();
-
         if (isServer)
         {
             ProduceUnits();
@@ -38,21 +41,6 @@ public class UnitSpawner : NetworkBehaviour, IPointerClickHandler
         if (isClient)
         {
             UpdateTimerDisplay();
-        }
-    }
-
-    private void SetUpNetworkPlayerReference()
-    {
-        // Called after Start
-        // Race Condition:  Cannot guarantee client is available within start since it follows from networkmanager Start() routine
-        if (networkPlayer == null)
-        {
-            NetworkConnection networkConnection = NetworkClient.connection;
-            if (networkConnection != null)
-            {
-                NetworkIdentity networkIdentity = networkConnection.identity;
-                if (networkIdentity != null) { networkPlayer = networkIdentity.GetComponent<NetworkPlayer>(); }
-            }
         }
     }
 

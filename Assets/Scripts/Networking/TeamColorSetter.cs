@@ -17,7 +17,7 @@ public class TeamColorSetter : NetworkBehaviour
     #region Server
     public override void OnStartServer()
     {
-        SetUpNetworkPlayerReference();
+        networkPlayer = connectionToClient.identity.GetComponent<NetworkPlayer>();
 
         teamColor = networkPlayer.GetTeamColor();
     }
@@ -39,18 +39,4 @@ public class TeamColorSetter : NetworkBehaviour
 
     #endregion
 
-    private void SetUpNetworkPlayerReference()
-    {
-        // Called after Start
-        // Race Condition:  Cannot guarantee client is available within start since it follows from networkmanager Start() routine
-        if (networkPlayer == null)
-        {
-            NetworkConnection networkConnection = connectionToClient;
-            if (networkConnection != null)
-            {
-                NetworkIdentity networkIdentity = networkConnection.identity;
-                if (networkIdentity != null) { networkPlayer = networkIdentity.GetComponent<NetworkPlayer>(); }
-            }
-        }
-    }
 }

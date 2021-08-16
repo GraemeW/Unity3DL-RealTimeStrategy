@@ -15,9 +15,9 @@ public class ResourcesDisplay : MonoBehaviour
     // Cached References
     NetworkPlayer networkPlayer = null;
 
-    private void Update()
+    private void Start()
     {
-        SetUpNetworkPlayerReference();
+        networkPlayer = NetworkClient.connection.identity.GetComponent<NetworkPlayer>();
         SubscribeToPlayerResources(true);
     }
 
@@ -46,21 +46,6 @@ public class ResourcesDisplay : MonoBehaviour
         {
             networkPlayer.clientOnResourcesUpdated -= ClientHandleResourcesUpdated;
             subscribedToResources = false;
-        }
-    }
-
-    private void SetUpNetworkPlayerReference()
-    {
-        // Called after Start
-        // Race Condition:  Cannot guarantee client is available within start since it follows from networkmanager Start() routine
-        if (networkPlayer == null)
-        {
-            NetworkConnection networkConnection = NetworkClient.connection;
-            if (networkConnection != null)
-            {
-                NetworkIdentity networkIdentity = networkConnection.identity;
-                if (networkIdentity != null) { networkPlayer = networkIdentity.GetComponent<NetworkPlayer>(); }
-            }
         }
     }
 

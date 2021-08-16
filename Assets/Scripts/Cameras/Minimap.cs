@@ -16,29 +16,18 @@ public class Minimap : MonoBehaviour, IPointerDownHandler, IDragHandler
     NetworkPlayer networkPlayer = null;
     Transform playerCameraTransform = null;
 
+    private void Start()
+    {
+        networkPlayer = NetworkClient.connection.identity.GetComponent<NetworkPlayer>();
+    }
+
     private void Update()
     {
         if (playerCameraTransform != null) { return; }
 
-        SetUpNetworkPlayerReference();
         if (networkPlayer != null)
         {
             playerCameraTransform = networkPlayer.GetCameraTransform();
-        }
-    }
-
-    private void SetUpNetworkPlayerReference()
-    {
-        // Called after Start
-        // Race Condition:  Cannot guarantee client is available within start since it follows from networkmanager Start() routine
-        if (networkPlayer == null)
-        {
-            NetworkConnection networkConnection = NetworkClient.connection;
-            if (networkConnection != null)
-            {
-                NetworkIdentity networkIdentity = networkConnection.identity;
-                if (networkIdentity != null) { networkPlayer = networkIdentity.GetComponent<NetworkPlayer>(); }
-            }
         }
     }
 

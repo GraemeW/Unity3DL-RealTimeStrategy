@@ -50,12 +50,11 @@ public class UnitSelectionHandler : MonoBehaviour
     private void Start()
     {
         mainCamera = Camera.main;
+        networkPlayer = NetworkClient.connection.identity.GetComponent<NetworkPlayer>();
     }
 
     private void Update()
     {
-        SetUpNetworkPlayerReference();
-
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
             if (!selectSticky)
@@ -72,21 +71,6 @@ public class UnitSelectionHandler : MonoBehaviour
         else if (Mouse.current.leftButton.isPressed)
         {
             UpdateSelectionArea();
-        }
-    }
-
-    private void SetUpNetworkPlayerReference() 
-    {
-        // Called after Start
-        // Race Condition:  Cannot guarantee client is available within start since it follows from networkmanager Start() routine
-        if (networkPlayer == null) 
-        {
-            NetworkConnection networkConnection = NetworkClient.connection;
-            if (networkConnection != null)
-            {
-                NetworkIdentity networkIdentity = networkConnection.identity;
-                if (networkIdentity != null) { networkPlayer = networkIdentity.GetComponent<NetworkPlayer>(); }
-            }
         }
     }
 

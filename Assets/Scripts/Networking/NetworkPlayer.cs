@@ -17,18 +17,33 @@ public class NetworkPlayer : NetworkBehaviour
     Color teamColor = new Color();
     List<Unit> units = new List<Unit>();
     List<Building> activeBuildings = new List<Building>();
+    [SyncVar (hook = nameof(AuthorityHandlePartyOwnerStateUpdated))] bool isPartyOwner = false;
+    [SyncVar (hook = nameof(AuthorityHandlePlayerStartPositionUpdated))] Vector3 playerStartPosition = new Vector3();
+    [SyncVar(hook = nameof(ClientHandleDisplayNameUpdated))] string displayName = "";
 
     // Events
     public event Action<int> clientOnResourcesUpdated;
+    public static event Action<bool> authorityOnPartyOwnerStateUpdated;
+    public static event Action clientOnInfoUpdated;
 
     public Color GetTeamColor()
     {
         return teamColor;
     }
 
+    public bool IsPartyOwner()
+    {
+        return isPartyOwner;
+    }
+
     public Transform GetCameraTransform()
     {
         return cameraTransform;
+    }
+
+    public string GetDisplayName()
+    {
+        return displayName;
     }
 
     public bool CanPlaceBuilding(BoxCollider buildingCollider, Vector3 position)
@@ -55,6 +70,8 @@ public class NetworkPlayer : NetworkBehaviour
         Unit.ServerOnUnitDespawned += ServerHandleUnitDespawned;
         Building.ServerOnBuildingSpawned += ServerHandleBuildingSpawned;
         Building.ServerOnBuildingDespawned += ServerHandleBuildingDespawned;
+
+        DontDestroyOnLoad(gameObject);
     }
 
     public override void OnStopServer()
@@ -65,6 +82,23 @@ public class NetworkPlayer : NetworkBehaviour
         Building.ServerOnBuildingDespawned -= ServerHandleBuildingDespawned;
     }
 
+    [Server]
+    public void SetPartyOwner(bool enable)
+    {
+        isPartyOwner = enable;
+    }
+
+    [Server]
+    public void SetPlayerStartPosition(Vector3 playerStartPosition)
+    {
+        this.playerStartPosition = playerStartPosition;
+    }
+
+    [Server]
+    public void SetDisplayName(string displayName)
+    {
+        this.displayName = displayName;
+    }
 
     [Server]
     public void SetResources(int newResources)
@@ -76,6 +110,15 @@ public class NetworkPlayer : NetworkBehaviour
     public void SetTeamColor(Color teamColor)
     {
         this.teamColor = teamColor;
+    }
+
+    [Command]
+    public void CmdStartGame()
+    {
+        if (!isPartyOwner) { return; }
+
+        NetworkManagerRTS networkManager = NetworkManager.singleton as NetworkManagerRTS;
+        networkManager.StartGame();
     }
 
     [Command]
@@ -102,7 +145,6 @@ public class NetworkPlayer : NetworkBehaviour
 
         SetResources(GetResources() - buildingToPlace.GetPrice());
     }
-
 
     private void ServerHandleUnitSpawned(Unit unit)
     {
@@ -159,9 +201,30 @@ public class NetworkPlayer : NetworkBehaviour
         Unit.AuthorityOnUnitDespawned += ClientHandleUnitDespawned;
     }
 
+    public override void OnStartClient()
+    {
+        if (NetworkServer.active) { return; }
+
+        NetworkManagerRTS networkManagerRTS= NetworkManager.singleton as NetworkManagerRTS;
+        if (networkManagerRTS != null)
+        {
+            networkManagerRTS.Players.Add(this);
+        }
+
+        DontDestroyOnLoad(gameObject);
+    }
+
     public override void OnStopClient()
     {
-        if (!isClientOnly || !hasAuthority) { return; }
+        if (!isClientOnly) { return; }
+
+        NetworkManagerRTS networkManagerRTS = NetworkManager.singleton as NetworkManagerRTS;
+        if (networkManagerRTS != null)
+        {
+            networkManagerRTS.Players.Remove(this);
+        }
+
+        if (!hasAuthority) { return; }
 
         Building.AuthorityOnBuildingSpawned -= AuthorityHandleBuildingSpawned;
         Building.AuthorityOnBuildingDespawned -= AuthorityHandleBuildingDespawned;
@@ -187,6 +250,14 @@ public class NetworkPlayer : NetworkBehaviour
         }
     }
 
+    private void ClientHandleDisplayNameUpdated(string oldDisplayName, string newDisplayName)
+    {
+        if (clientOnInfoUpdated != null)
+        {
+            clientOnInfoUpdated.Invoke();
+        }
+    }
+
     private void AuthorityHandleBuildingSpawned(Building building)
     {
         activeBuildings.Add(building);
@@ -195,6 +266,28 @@ public class NetworkPlayer : NetworkBehaviour
     private void AuthorityHandleBuildingDespawned(Building building)
     {
         activeBuildings.Remove(building);
+    }
+
+    private void AuthorityHandlePartyOwnerStateUpdated(bool oldState, bool newState)
+    {
+        if (!hasAuthority) { return; }
+
+        if (authorityOnPartyOwnerStateUpdated != null)
+        {
+            authorityOnPartyOwnerStateUpdated.Invoke(newState);
+        }
+    }
+
+    private void AuthorityHandlePlayerStartPositionUpdated(Vector3 oldPlayerStartPosition, Vector3 newPlayerStartPosition)
+    {
+        if (!hasAuthority) { return; }
+
+        Vector3 startPosition = new Vector3(
+            newPlayerStartPosition.x,
+            cameraTransform.position.y,
+            newPlayerStartPosition.z);
+
+        cameraTransform.position = startPosition;
     }
 
     #endregion
